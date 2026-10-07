@@ -1,6 +1,6 @@
 <div align="center">
 
-# # yappr 
+#  Yappr AI agent
 
 <img src="assets/meme.jpg" width="550">
 
@@ -16,9 +16,9 @@
 
 ---
 
-## What is Turing?
+## What is Yappr?
 
-Turing is a local AI agent built with Python and Ollama.
+Yappr is a local AI agent built with Python and Ollama.
 
 It can use external tools, access real-world information, maintain persistent memory, process documents, and retrieve relevant information using a lightweight RAG pipeline.
 
@@ -44,7 +44,7 @@ It can use external tools, access real-world information, maintain persistent me
 <img src="assets/architecture.png" width="550">
 
 
-**User → Turing → Local LLM → Tool Registry → Tools → Results → Local LLM → Response**
+**User → Yappr → Local LLM → Tool Registry → Tools → Results → Local LLM → Response**
 
 Turing uses a dynamic tool registry to keep tools separate from the main agent, making the architecture easier to extend and maintain.
 
@@ -174,7 +174,7 @@ Contains the retrieval-augmented generation pipeline, including document chunkin
 Contains automated tests for the project's core tools and components.
 
 **`tools/`**  
-Contains Turing's individual tools and the dynamic tool registry used by the agent.
+Contains Yappr's individual tools and the dynamic tool registry used by the agent.
 
 ---
 
@@ -214,7 +214,7 @@ Create a `.env` file based on `.env.example`:
 
 The `.env` file contains private credentials and should never be committed to GitHub.
 
-### 4. Start Turing
+### 4. Start Yappr
 
     ./shell.sh
 
