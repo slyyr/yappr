@@ -1,6 +1,7 @@
 <div align="center">
-    
+ 
 #  Yappr AI Agent
+<br>
 <img src="assets/meme.jpg" width="550">
 <br><br>
 
