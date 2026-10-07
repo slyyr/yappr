@@ -1,6 +1,6 @@
 <div align="center">
 
-# Turing AI Agent
+# # yappr 
 
 <img src="assets/meme.jpg" width="550">
 
