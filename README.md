@@ -261,6 +261,6 @@ Please open an issue before making major architectural changes.
 
 ## Author
 
-**Zermello $**
+**Slyyr $**
 
 ---
