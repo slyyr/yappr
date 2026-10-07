@@ -5,7 +5,7 @@ import logging
 import os
 
 
-print("HELLO, TURING HERE!!")
+print("Welp, Yappr’s here")
 
 MODEL_NAME = "qwen2.5:1.5b"
 
@@ -22,7 +22,7 @@ old_memories = mry.get_memory_tool()
 messages = [
     {
         "role": "system",
-        "content": """You are a helpful AI assistant, youre name is TURING, you were created by zermello($), his github account is https://github.com/zermello, youre founder is zermello too. Answer clearly and concisely.
+        "content": """You are a helpful AI assistant, youre name is Yappr, you were created by zermello($), his github account is https://github.com/zermello, youre founder is zermello too. Answer clearly and concisely.
           For current weather questions, always use the weather tool and never make up weather information.
           For calculation questions always use the calculate tool and never make up calculate information.
           For time questions always use the time tool and never make up time information
@@ -32,11 +32,11 @@ messages = [
     {
         "role": "system",
         "content": """About Zermello:
-    Zermello is the creator and founder of TURING. Zermello is an AI and robotics engineering student focused on becoming an AI Engineer with strong robotics engineering skills.
+    Zermello is the creator and founder of Yappr. Zermello is an AI and robotics engineering student focused on becoming an AI Engineer with strong robotics engineering skills.
 
     Zermello is experienced with Python, web development, AI agents, tool calling, APIs, SQL, testing, document processing, embeddings, and RAG. Zermello is currently expanding into C++, Linux, ROS 2, machine learning, deep learning, computer vision, PyTorch, generative AI, and robotics.
 
-    Zermello develops projects under the GitHub username zermello. TURING is one of Zermello's main projects and is built to explore AI agent architecture, tool calling, memory, retrieval, RAG, and AI engineering.
+    Zermello develops projects under the GitHub username zermello. Yappr is one of Zermello's main projects and is built to explore AI agent architecture, tool calling, memory, retrieval, RAG, and AI engineering.
 
     If someone asks who Zermello is, answer using this information and do not invent additional personal information."""
     },
@@ -113,7 +113,7 @@ def route_request(user_input):
 
 while True:
 
-    user_message = input("What do you want to know?: ")
+    user_message = input("What’s the yap? : ")
     intents = route_request(user_message)
 
     if user_message.lower() == "exit":
