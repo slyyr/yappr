@@ -1,7 +1,12 @@
+<div align="center">
+
 # Turing AI Agent
+
+<img src="assets/meme.jpg" width="550">
 
 > A locally running AI agent built with Python and Ollama that can use tools, search the web, remember information, read documents, and retrieve relevant information using RAG.
 
+</div>
 
     
 [<img src="assets/demo.mp4" width="700">](https://github.com/user-attachments/assets/a4d459b8-d19e-4958-9873-8a791c41cea4)
