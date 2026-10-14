@@ -47,7 +47,13 @@ messages = [
     }
 ]
 
+initial_messages = [message.copy() for message in messages]
 
+
+def clear_conversation(messages, initial_messages):
+    """Reset conversation context while preserving initial system messages."""
+    messages[:] = [message.copy() for message in initial_messages]
+    return "Conversation cleared. Persistent memories and documents are preserved."
 
 
 def route_request(user_input):
@@ -111,89 +117,87 @@ def route_request(user_input):
          intents.append("none")
     return intents
 
-while True:
 
-    user_message = input("What’s the yap? : ")
-    intents = route_request(user_message)
+def main():
+    while True:
+        user_message = input("What’s the yap? : ").strip()
 
-    if user_message.lower() == "exit":
-        print("Goodbye!")
-        break
+        if user_message.lower() == "exit":
+            print("Goodbye!")
+            break
 
+        if user_message.lower() == "/clear":
+            print(clear_conversation(messages, initial_messages))
+            logging.info("Conversation context cleared.")
+            continue
 
-    # Add user message to memory
-    messages.append({
-        "role": "user",
-        "content": user_message
-    })
+        intents = route_request(user_message)
 
-    logging.info(f"USER: {user_message}")
+        # Add user message to conversation history.
+        messages.append({
+            "role": "user",
+            "content": user_message
+        })
 
-    selected_tools = [
-    registry.tools[intent]["definition"]
-    for intent in intents
-    if intent in registry.tools
-    ]
+        logging.info(f"USER: {user_message}")
 
-    # Ask Ollama what to do
-    response = ollama.chat(
-        model=MODEL_NAME,
-        messages=messages,
-        tools=selected_tools
-    )
+        selected_tools = [
+            registry.tools[intent]["definition"]
+            for intent in intents
+            if intent in registry.tools
+        ]
 
+        # Ask Ollama what to do.
+        response = ollama.chat(
+            model=MODEL_NAME,
+            messages=messages,
+            tools=selected_tools
+        )
 
-    # If Ollama wants to use a tool
-    if response.message.tool_calls:
+        # Handle tool calls.
+        if response.message.tool_calls:
+            messages.append(response.message)
 
-        # Save Ollama's tool-call message
-        messages.append(response.message)
+            for tool_call in response.message.tool_calls:
+                function_name = tool_call.function.name
+                function_arguments = tool_call.function.arguments
 
-        for  tool_call in response.message.tool_calls:
-            function_name = tool_call.function.name
-            function_arguments = tool_call.function.arguments
+                logging.info(f"FUNCTION: {function_name}")
 
-            logging.info(f"FUNCTION: {function_name}")
+                function = registry.tools[function_name]["function"]
+                result = function(**function_arguments)
 
-            function = registry.tools[function_name]["function"]
-            result = function(**function_arguments)
-            logging.info(f"RESULT: {result}")
+                logging.info(f"RESULT: {result}")
 
+                messages.append({
+                    "role": "tool",
+                    "tool_name": function_name,
+                    "content": str(result)
+                })
 
-            # Add tool result to memory
+            # Send tool results back to Ollama.
+            final_response = ollama.chat(
+                model=MODEL_NAME,
+                messages=messages
+            )
+
+            print(final_response.message.content)
+            logging.info(f"AI: {final_response.message.content}")
+
             messages.append({
-                "role": "tool",
-                "tool_name": tool_call.function.name,
-                "content": str(result)
+                "role": "assistant",
+                "content": final_response.message.content
+            })
+
+        else:
+            print(response.message.content)
+            logging.info(f"AI: {response.message.content}")
+
+            messages.append({
+                "role": "assistant",
+                "content": response.message.content
             })
 
 
-        # Send tool result back to Ollama
-        final_response = ollama.chat(
-            model=MODEL_NAME,
-            messages=messages
-        )
-
-
-        # Print final answer
-        print(final_response.message.content)
-        logging.info(f"AI: {final_response.message.content}")
-
-
-        # Save final answer to memory
-        messages.append({
-            "role": "assistant",
-            "content": final_response.message.content
-        })
-
-
-    # Normal conversation without tools
-    else:
-
-        print(response.message.content)
-        logging.info(f"AI: {response.message.content}")
-
-        messages.append({
-            "role": "assistant",
-            "content": response.message.content
-        })
+if __name__ == "__main__":
+    main()

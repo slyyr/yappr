@@ -26,3 +26,4 @@ logs/*
 # IDE
 .vscode/
 .idea/
+pytest-temp/
