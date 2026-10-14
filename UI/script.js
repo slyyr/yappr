@@ -7,6 +7,8 @@
   const mobileMenuBtn = document.getElementById("mobileMenuBtn");
   const mobileFilesBtn = document.getElementById("mobileFilesBtn");
   const navItems = document.querySelectorAll(".nav-item");
+  const emptyNotice = document.getElementById("emptyNotice");
+const noticeClose = document.getElementById("noticeClose");
 
   const chatTitle = document.getElementById("chatTitle");
   const renameBtn = document.getElementById("renameBtn");
@@ -224,6 +226,20 @@
     messages.appendChild(el);
   }
 
+  let noticeTimer;
+
+  function showEmptyNotice() {
+    emptyNotice.classList.add("is-visible");
+    clearTimeout(noticeTimer);
+    noticeTimer = setTimeout(hideEmptyNotice, 4000);
+  }
+
+  function hideEmptyNotice() {
+    emptyNotice.classList.remove("is-visible");
+  }
+
+  noticeClose.addEventListener("click", hideEmptyNotice);
+
   function resetChat() {
     messages.innerHTML = "";
     chatTitle.textContent = "New Chat";
@@ -232,7 +248,13 @@
 
   function sendMessage() {
     const text = messageInput.value.trim();
-    if (!text) return;
+    if (!text) {
+      messageInput.value = "";
+      messageInput.focus();
+      showEmptyNotice();
+      return;
+    }
+    hideEmptyNotice();
     appendUserMessage(text);
     messageInput.value = "";
     sendBtn.classList.remove("is-sent");
